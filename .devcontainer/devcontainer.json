@@ -1,30 +1,17 @@
 {
   "name": "Laravel Codespace",
-  "image": "laravelsail/php82-composer",
-  "features": {
-    "ghcr.io/devcontainers/features/composer:1": {},
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "20"
-    },
-    "ghcr.io/devcontainers/features/mysql-client:1": {},
-    "ghcr.io/devcontainers/features/git:1": {}
+  "build": {
+    "dockerfile": "Dockerfile"
   },
-  "postCreateCommand": "composer install",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "bmewburn.vscode-intelephense-client",
-        "onecentlin.laravel-blade",
-        "ryannaddy.laravel-artisan"
-      ]
-    }
+  "settings": {
+    "php.validate.executablePath": "/usr/local/bin/php",
+    "composer.executablePath": "/usr/local/bin/composer"
   },
-  "portsAttributes": {
-    "8000": {
-      "label": "Laravel App",
-      "onAutoForward": "openBrowser"
-    }
-  },
+  "extensions": [
+    "bmewburn.vscode-intelephense-client",
+    "felixfbecker.php-debug"
+  ],
   "forwardPorts": [8000],
+  "postCreateCommand": "apt-get update && apt-get install -y php8.1 && composer install && php artisan key:generate",
   "remoteUser": "vscode"
 }
