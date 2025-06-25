@@ -1,0 +1,9 @@
+{
+  "name": "Laravel Workspace",
+  "image": "ghcr.io/devcontainers/php:8.2-bullseye",
+  "features": {
+    "composer": "latest",
+    "mysql": "latest"
+  },
+  "postCreateCommand": "composer install && cp .env.example .env && php artisan key:generate"
+}
