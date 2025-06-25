@@ -1,9 +1,30 @@
 {
-  "name": "Laravel Workspace",
-  "image": "ghcr.io/devcontainers/php:8.2-bullseye",
+  "name": "Laravel Codespace",
+  "image": "mcr.microsoft.com/devcontainers/php:8.2",  // Laravel thường dùng PHP 8.2
   "features": {
-    "composer": "latest",
-    "mysql": "latest"
+    "ghcr.io/devcontainers/features/composer:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    },
+    "ghcr.io/devcontainers/features/mysql-client:1": {},
+    "ghcr.io/devcontainers/features/git:1": {}
   },
-  "postCreateCommand": "composer install && cp .env.example .env && php artisan key:generate"
+  "postCreateCommand": "composer install && php artisan migrate",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "onecentlin.laravel-blade",
+        "ryannaddy.laravel-artisan"
+      ]
+    }
+  },
+  "portsAttributes": {
+    "8000": {
+      "label": "Laravel App",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "forwardPorts": [8000],
+  "remoteUser": "vscode"
 }
