@@ -9,7 +9,7 @@
     "ghcr.io/devcontainers/features/mysql-client:1": {},
     "ghcr.io/devcontainers/features/git:1": {}
   },
-  "postCreateCommand": "composer install && php artisan migrate",
+  "postCreateCommand": "composer install",
   "customizations": {
     "vscode": {
       "extensions": [
