@@ -1,6 +1,6 @@
 {
   "name": "Laravel Codespace",
-  "image": "mcr.microsoft.com/devcontainers/php:8.2",  // Laravel thường dùng PHP 8.2
+  "image": "laravelsail/php82-composer",
   "features": {
     "ghcr.io/devcontainers/features/composer:1": {},
     "ghcr.io/devcontainers/features/node:1": {
