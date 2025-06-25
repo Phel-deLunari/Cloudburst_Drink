@@ -12,6 +12,6 @@
     "felixfbecker.php-debug"
   ],
   "forwardPorts": [8000],
-  "postCreateCommand": "apt-get update && apt-get install -y php8.1-cli php8.1-mysql php8.1-mbstring php8.1-xml php8.1-zip && composer install && php artisan key:generate",
+  "postCreateCommand": "apt-get update && apt-get install -y php8.3-cli php8.3-mysql php8.3-mbstring php8.3-xml php8.3-zip && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=2.8.9 && composer install && php artisan key:generate",
   "remoteUser": "vscode"
 }
