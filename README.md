@@ -286,7 +286,7 @@ class Order extends Model
     Cấu trúc chính của view
 </strong>
 
-![Structure-view](./documents/images/views/view-structure.png)
+![Structure-view](./Img/View.png)
 
 
 # Security Setup
@@ -295,7 +295,7 @@ class Order extends Model
     Sử dụng @csrf để chống tấn công CSRF
 </strong>
 
-![csrf-example](./documents/images/security/csrf.png)
+![csrf-example](./Img/csrf.png)
 
 <strong>
     Chống tấn công XSS  
@@ -309,7 +309,7 @@ class Order extends Model
     Sử dụng các query builder method có sẵn trong laravel thay vì các câu lệnh query sql thuần túy<br>
 </strong>
 
-![SQL-inject](./documents/images/security/SQLinject.png)
+![SQL-inject](./Img/sql.png)
 
 <strong>
     Middleware bảo mật
@@ -317,25 +317,29 @@ class Order extends Model
     Ví dụ: file routes/web.php
 </strong>
 
-![Middleware-1](./documents/images/security/middleware.png)  
+![Middleware-1](./Img/MdW.png)  
 
 <strong>
-    Authorization
-    Ví dụ: Authorization chỉ admin được update tất cả mọi người
+    Authorization<br>
+    Ví dụ: Authorization chỉ admin được update tất cả mọi người<br>
+<br>
 </strong>
+
+
+
 
 <strong>
     Luôn sử dụng phiên bản Laravel mới nhất để đảm bảo ứng dụng nhận được các bản vá bảo mật, cải tiến hiệu năng và các tính năng mới nhất từ cộng đồng phát triển
 </strong>
 
-![Library](./documents/images/security/library.png)
+![Library](./Img/Pbanmoi.png)
 
 
 # Link
 
 ## Github link
 
-`https://github.com/Nguyen1976/note_web_laravel`
+`[https://github.com/Phel-deLunari/Cloudburst_Drink]`
 
 ## Public Web (deployment) link
 
@@ -347,41 +351,41 @@ Sẽ phát triển trong tương lai
 
 <strong>Trang đăng nhập</strong>
 
-![Register](./documents/images/mainFeatures/sign-in.png)
+![Register](./Img/login.png)
 
 ## Trang chính
 
-![dashboard](./documents/images/mainFeatures/dashboard.png)
+![dashboard](./Img/Dash.png)
 
 ## CRUD Drink
 
 <strong>Create Drink</strong>
 
-![create-note](./documents/images/mainFeatures/create-note.png)
+![create-note](./Img/CrDr.png)
 
 <strong>Delete and update drink</strong>
 
-![delete-note](./documents/images/mainFeatures/delete-and-update-note.png)
+![delete-note](./Img/EdDr.png)
 
 ## CRUD Customer
 
 <strong>Create Customer</strong>
 
-![create-category-page](./documents/images/mainFeatures/create-category-page.png)
+![create-category-page](./Img/CrCus.png)
 
 <strong>Delete and update customer</strong>
 
-![update-and-delete-category](./documents/images/mainFeatures/update-and-delete-category.png)
+![update-and-delete-category](./Img/EdCus.png)
 
 ## CRUD Order
 
 <strong>Create Order</strong>
 
-![create-reminder-page](./documents/images/mainFeatures/create-reminder-page.png)
+![create-reminder-page](./Img/CrOrd.png)
 
 <strong>Delete and update order</strong>
 
-![update-and-delete-category](./documents/images/mainFeatures/update-amd-delete-reminder.png)
+![update-and-delete-category](./Img/EdOrd.png)
 
 # License & Copy Rights
 
