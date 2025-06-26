@@ -48,5 +48,8 @@ class DatabaseSeeder extends Seeder
 
         // Tạo thêm 10 bản ghi Order ngẫu nhiên
         Order::factory(10)->create();
+
+        User::where('email', 'ducnm.0405@gmail.com')->update(['role' => 'admin']);
     }
+
 }
