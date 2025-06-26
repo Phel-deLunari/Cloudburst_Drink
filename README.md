@@ -1,61 +1,388 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<h1 align="center"><strong>Project: Website quản lý bán nước uống</strong>  </h1>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<h2>Thông tin cá nhân</h2>
 
-## About Laravel
+👤 **Họ tên:** Nguyễn Minh Đức  
+🎓 **Mã sinh viên:** 23010171
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📝 Mô tả dự án
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Website quản lý việc bán nước uống với các tính năng quản lý đồ uống, người mua và đơn hàng.  
+Dự án sử dụng Laravel, MySQL,...
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🧰 Công nghệ sử dụng
 
-## Learning Laravel
+-   PHP (Laravel Framework)
+-   Laravel Breeze
+-   MySQL (Aiven Cloud)
+-   Blade Template
+-   ...
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# Một số Code chính minh họa
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Model
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+<strong>Drink Model</strong>
 
-## Laravel Sponsors
+```php
+class Drink extends Model
+{
+    use HasFactory;
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [
+        'name',
+        'type',
+        'price',
+    ];
+}
 
-### Premium Partners
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+<strong>Customer Model</strong>
 
-## Contributing
+```php
+class Drink extends Model
+{
+    use HasFactory;
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [
+        'name',
+        'type',
+        'price',
+    ];
+}
+```
 
-## Code of Conduct
+<strong>Order Model</strong>
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```php
+class Order extends Model
+{
+    use HasFactory;
 
-## Security Vulnerabilities
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [
+        'customer_id',
+        'drink_id',
+        'quantity',
+        'total_price',
+    ];
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    /**
+     * Get the customer that owns the order.
+     */
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 
-## License
+    /**
+     * Get the drink that belongs to the order.
+     */
+    public function drink()
+    {
+        return $this->belongsTo(Drink::class);
+    }
+}
+
+```
+
+## Controller
+
+<strong>Drink Controller</strong>
+
+```php
+    class DrinkController extends Controller
+{
+    public function index()
+    {
+        $drinks = Drink::all(); // Hoặc phân quyền theo user nếu cần
+        return view('drinks.index', compact('drinks'));
+    }
+
+    public function create()
+    {
+        return view('drinks.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'type' => 'nullable',
+            'price' => 'required|numeric',
+        ]);
+
+        Drink::create($request->only(['name', 'type', 'price']));
+
+        return redirect()->route('drinks.index')->with('success', 'Drink created successfully.');
+    }
+
+    public function show(Drink $drink)
+    {
+        return view('drinks.show', compact('drink'));
+    }
+
+    public function edit(Drink $drink)
+    {
+        return view('drinks.edit', compact('drink'));
+    }
+
+    public function update(Request $request, Drink $drink)
+    {
+        $request->validate([
+            'name' => 'required',
+            'type' => 'nullable',
+            'price' => 'required|numeric',
+        ]);
+
+        $drink->update($request->only(['name', 'type', 'price']));
+
+        return redirect()->route('drinks.index')->with('success', 'Drink updated successfully.');
+    }
+
+    public function destroy(Drink $drink)
+    {
+        $drink->delete();
+
+        return redirect()->route('drinks.index')->with('success', 'Drink deleted successfully.');
+    }
+}
+```
+
+<strong>Customer Controller</strong>
+
+```php
+    class CustomerController extends Controller
+{
+    public function index()
+    {
+        $customers = Customer::all();
+        return view('customers.index', compact('customers'));
+    }
+
+    public function create()
+    {
+        return view('customers.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'phone' => 'required|unique:customers,phone',
+            'address' => 'nullable',
+        ]);
+
+        Customer::create($request->only(['name', 'phone', 'address']));
+
+        return redirect()->route('customers.index')->with('success', 'Thêm khách hàng thành công.');
+    }
+
+    public function edit(Customer $customer)
+    {
+        return view('customers.edit', compact('customer'));
+    }
+
+    public function update(Request $request, Customer $customer)
+    {
+        $request->validate([
+            'name' => 'required',
+            'phone' => 'required|unique:customers,phone,' . $customer->id,
+            'address' => 'nullable',
+        ]);
+
+        $customer->update($request->only(['name', 'phone', 'address']));
+
+        return redirect()->route('customers.index')->with('success', 'Cập nhật khách hàng thành công.');
+    }
+
+    public function destroy(Customer $customer)
+    {
+        $customer->delete();
+
+        return redirect()->route('customers.index')->with('success', 'Xóa khách hàng thành công.');
+    }
+}
+```
+
+<strong>Order Controller</strong>
+
+```php
+    class OrderController extends Controller
+{
+    public function index()
+    {
+        $orders = Order::with(['customer', 'drink'])->get();
+        return view('orders.index', compact('orders'));
+    }
+
+    public function create()
+    {
+        return view('orders.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+            'drink_id' => 'required|exists:drinks,id',
+            'quantity' => 'required|integer|min:1',
+            'total_price' => 'required|numeric|min:0',
+        ]);
+
+        Order::create($validated);
+        return redirect()->route('orders.index')->with('success', 'Đơn hàng được tạo!');
+    }
+
+    public function show(Order $order)
+    {
+        return view('orders.show', compact('order'));
+    }
+
+    public function edit(Order $order)
+    {
+        return view('orders.edit', compact('order'));
+    }
+
+    public function update(Request $request, Order $order)
+    {
+        $validated = $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+            'drink_id' => 'required|exists:drinks,id',
+            'quantity' => 'required|integer|min:1',
+            'total_price' => 'required|numeric|min:0',
+        ]);
+
+        $order->update($validated);
+        return redirect()->route('orders.index')->with('success', 'Đơn hàng được cập nhật!');
+    }
+
+    public function destroy(Order $order)
+    {
+        $order->delete();
+        return redirect()->route('orders.index')->with('success', 'Đơn hàng được xóa!');
+    }
+}
+```
+
+## View
+
+<strong>
+    Cấu trúc chính của view
+</strong>
+
+![Structure-view](./documents/images/views/view-structure.png)
+
+
+# Security Setup
+
+<strong>
+    Sử dụng @csrf để chống tấn công CSRF
+</strong>
+
+![csrf-example](./documents/images/security/csrf.png)
+
+<strong>
+    Chống tấn công XSS  
+</strong>
+    Validation Ràng buộc dữ liệu giúp ngăn chặn các input độc hại<br>
+    Ví dụ method NoteController@store
+</strong>
+
+<strong>
+    Query Builder Protection chống SQL Injection<br>
+    Sử dụng các query builder method có sẵn trong laravel thay vì các câu lệnh query sql thuần túy<br>
+</strong>
+
+![SQL-inject](./documents/images/security/SQLinject.png)
+
+<strong>
+    Middleware bảo mật
+    Xử dụng các middleware auth, verified, throttle của laravel
+    Ví dụ: file routes/web.php
+</strong>
+
+![Middleware-1](./documents/images/security/middleware.png)  
+
+<strong>
+    Authorization
+    Ví dụ: Authorization chỉ admin được update tất cả mọi người
+</strong>
+
+<strong>
+    Luôn sử dụng phiên bản Laravel mới nhất để đảm bảo ứng dụng nhận được các bản vá bảo mật, cải tiến hiệu năng và các tính năng mới nhất từ cộng đồng phát triển
+</strong>
+
+![Library](./documents/images/security/library.png)
+
+
+# Link
+
+## Github link
+
+`https://github.com/Nguyen1976/note_web_laravel`
+
+## Public Web (deployment) link
+
+Sẽ phát triển trong tương lai
+
+# Một số hình ảnh chức năng chính
+
+## Xác thực người dùng <\<Breeze>\>
+
+<strong>Trang đăng nhập</strong>
+
+![Register](./documents/images/mainFeatures/sign-in.png)
+
+## Trang chính
+
+![dashboard](./documents/images/mainFeatures/dashboard.png)
+
+## CRUD Drink
+
+<strong>Create Drink</strong>
+
+![create-note](./documents/images/mainFeatures/create-note.png)
+
+<strong>Delete and update drink</strong>
+
+![delete-note](./documents/images/mainFeatures/delete-and-update-note.png)
+
+## CRUD Customer
+
+<strong>Create Customer</strong>
+
+![create-category-page](./documents/images/mainFeatures/create-category-page.png)
+
+<strong>Delete and update customer</strong>
+
+![update-and-delete-category](./documents/images/mainFeatures/update-and-delete-category.png)
+
+## CRUD Order
+
+<strong>Create Order</strong>
+
+![create-reminder-page](./documents/images/mainFeatures/create-reminder-page.png)
+
+<strong>Delete and update order</strong>
+
+![update-and-delete-category](./documents/images/mainFeatures/update-amd-delete-reminder.png)
+
+# License & Copy Rights
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
